@@ -1,0 +1,27 @@
+#######################################
+# Syntax Coloring DFRobot_MHZ9041A
+#######################################
+
+#######################################
+# Datatypes (KEYWORD1)
+#######################################
+
+DFRobot_MHZ9041A_I2C	KEYWORD1
+DFRobot_MHZ9041A_UART	KEYWORD1
+#######################################
+# Methods and Functions (KEYWORD2)
+#######################################
+
+setMode	KEYWORD2
+getSourceData	KEYWORD2
+getCH4Concentration	KEYWORD2
+getTemperature	KEYWORD2
+getErrorMsg	KEYWORD2
+getActiveData	KEYWORD2
+reset	KEYWORD2
+setDeviceID	KEYWORD2
+getDeviceID	KEYWORD2
+
+#######################################
+# Constants (LITERAL1)
+#######################################

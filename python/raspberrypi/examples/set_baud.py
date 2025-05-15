@@ -1,12 +1,12 @@
 # -*- coding: utf-8 -*
 '''!
-  @file set_device_id.py
-  @brief set device id
+  @file set_baud.py
+  @brief set moude and baud rate
   @copyright  Copyright (c) 2025 DFRobot Co.Ltd (http://www.dfrobot.com)
   @license    The MIT License (MIT)
   @author     [ZhixinLiu](zhixin.liu@dfrobot.com)
   @version    V1.0
-  @date       2025-04-23
+  @date       2025-05-14
   @url https://github.com/DFRobot/DFRobot_MHZ9041A
 '''
 from __future__ import print_function
@@ -16,35 +16,29 @@ sys.path.append("../")
 import time
 from DFRobot_MHZ9041A import *
 
-'''
-  Select to use i2c or UART
-  I2C_MODE
-  UART_MODE
-'''
-ctype = UART_MODE
-
-if ctype == I2C_MODE:
-  I2C_1 = 0x01
-  ch4 = DFRobot_MHZ9041A_I2C (I2C_1, 0x34)
-elif ctype == UART_MODE:
-  ch4 = DFRobot_MHZ9041A_UART(115200)
-
+# only support I2C mode
+I2C_1 = 0x01
+ch4 = DFRobot_MHZ9041A_I2C (I2C_1, 0x34)
+    
 def setup():
   while(ch4.begin() == False):
     print("Sensor initialize failed!!")
     time.sleep(1)
   print("Sensor initialize success!!")
-  old_id = ch4.get_device_id()
-  print("old Device ID: ",old_id)
-  ch4.set_mode(eWorkMode_t.PASSIVITY_MODE)
-  ch4.set_device_id(0x14)
+  #ch4.reset()
+  old_baud = ch4.get_baud()
+  print("Current baud rate:", old_baud)
+  # set new baud rate
+  ch4.set_baud(eBaud_t.BAUD_115200)
+  print("Baud rate set command sent!")
   time.sleep(1)
-  id = ch4.get_device_id()
-  print("new Device ID: ",id)
+  new_baud = ch4.get_baud()
+  print("Updated baud rate:", new_baud)
+  print("Note: The new baud rate takes effect after power cycling the device.")
   
 def loop():
   exit()
-
+  
 if __name__ == "__main__":
   setup()
   while True:

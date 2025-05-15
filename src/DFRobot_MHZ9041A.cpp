@@ -13,6 +13,38 @@
 DFRobot_MHZ9041A::DFRobot_MHZ9041A(void){}
 DFRobot_MHZ9041A::~DFRobot_MHZ9041A(void){}
 
+uint32_t DFRobot_MHZ9041A::baudMatch(eModuleBaud_t baud)
+{
+  if(baud == eBaud9600){
+    return 9600;
+  }else if(baud == eBaud19200){
+    return 19200;
+  }else if(baud == eBaud38400){
+    return 38400;
+  }else if(baud == eBaud57600){
+    return 57600;
+  }else if(baud == eBaud115200){
+    return 115200;
+  }else{
+    return 115200;
+  }
+}
+
+void DFRobot_MHZ9041A::setBaud(eModuleBaud_t baud)
+{
+  uint8_t buffer[2] = {0};
+  buffer[0] = (uint8_t)baud;
+  writeReg(REG_BAUD_L, buffer, 1);
+  return;
+}
+
+uint32_t DFRobot_MHZ9041A::getBaud(void)
+{
+  uint8_t buffer[2] = {0};
+  readReg(REG_BAUD_L, buffer, 1);
+	return baudMatch((eModuleBaud_t)buffer[0]);
+}
+
 void DFRobot_MHZ9041A::setMode(eWorkMode_t mode)
 {
   uint8_t buffer[1] = {0};
@@ -76,8 +108,6 @@ float DFRobot_MHZ9041A::getTemperature(void)
   delay(5);
   return temp;
 }
-
-
 eFaultCode_t DFRobot_MHZ9041A::getErrorMsg(void)
 {
   uint8_t buffer[1] = {0};
@@ -144,9 +174,14 @@ bool DFRobot_MHZ9041A_I2C::begin()
   __pWire->beginTransmission(__I2C_addr);
   if(__pWire->endTransmission() == 0){
     return true;
-  }else{
-    return false;
   }
+  return false;
+}
+
+int16_t DFRobot_MHZ9041A_I2C::readData(uint8_t *data)
+{
+  (void)data;
+  return -1;
 }
 
 void DFRobot_MHZ9041A_I2C::writeReg(uint8_t reg, uint8_t *data, uint8_t len)

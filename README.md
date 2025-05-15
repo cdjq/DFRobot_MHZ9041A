@@ -121,6 +121,28 @@ bool setDeviceID(uint8_t id);
  * @return Module address
  */
 uint8_t getDeviceID(void);
+
+/**
+ * @fn setBaud
+ * @brief Set the Baud object
+ * @param baud eModuleBaud_t
+ * @note
+ * | Support Baud | UNO/ESP8266 | Leonardo/Mega2560 | ESP32 |  M0 |
+ * | eBaud9600    |      √      |         √         |   √   |  √  |
+ * | eBaud19200   |      √      |         √         |   √   |  √  |
+ * | eBaud38400   |      √      |         √         |   √   |  √  |
+ * | eBaud57600   |      √      |         √         |   √   |  √  |
+ * | eBaud115200  |             |         √         |   √   |  √  |
+ */
+void setBaud(eModuleBaud_t baud);
+
+/**
+ * @fn getBaud
+ * @brief Get the Baud object
+ * @return baud rate
+ * @note 9600, 19200, 38400, 57600, 115200
+ */
+uint32_t getBaud(void);
 ```
 
 ## Compatibility

@@ -21,6 +21,8 @@ getActiveData	KEYWORD2
 reset	KEYWORD2
 setDeviceID	KEYWORD2
 getDeviceID	KEYWORD2
+setBaud	KEYWORD2
+getBaud	KEYWORD2
 
 #######################################
 # Constants (LITERAL1)

@@ -25,7 +25,7 @@ ctype = I2C_MODE
 
 if ctype == I2C_MODE:
   I2C_1 = 0x01
-  ch4 = DFRobot_MHZ9041A_I2C (I2C_1, 0x34)
+  ch4 = DFRobot_MHZ9041A_I2C (I2C_1, 0x14)
 elif ctype == UART_MODE:
   ch4 = DFRobot_MHZ9041A_UART(115200)
     

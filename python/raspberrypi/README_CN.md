@@ -44,6 +44,19 @@ python3 set_device_ID.py
 ## 方法
 
 ```python
+
+  def set_baud(self, baud):
+    '''!
+      @brief 设置模块波特率
+      @param 枚举参数 eBaud_t
+    '''
+  
+  def get_baud(self):
+    '''!
+      @brief 获取模块波特率
+      @return 波特率 [9600, 19200, 38400, 57600, 115200]
+    '''
+
   def set_mode(self, mode):
     '''!
       @brief 设置模块的工作模式

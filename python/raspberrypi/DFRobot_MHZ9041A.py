@@ -28,11 +28,19 @@ class eWorkMode_t:
     PASSIVITY_MODE = 0x00
     ACTIVE_MODE = 0x01
 
+class eBaud_t:
+    BAUD_9600 = 0x02
+    BAUD_19200 = 0x04
+    BAUD_38400 = 0x05
+    BAUD_57600 = 0x07
+    BAUD_115200 = 0x08
+    
 I2C_MODE = 0
 UART_MODE = 1
   
 REG_VID_H = 0x02
 REG_DEVICE_L = 0x05
+REG_BAUD_L = 0X07
 REG_LEL_H = 0x0C
 REG_TEMP_H = 0x0E
 REG_ERROR_CODE = 0x10
@@ -57,6 +65,45 @@ class DFRobot_MHZ9041A(object):
                 self.ser.open()
         self._connect = 0
 
+    def baud_match(self, baud):
+        '''!
+            @brief Match enum baud value to actual baud rate
+            @param baud: enum value like eBaud_t.BAUD_9600
+            @return int: actual baud rate (e.g. 9600), or 0 if invalid
+        '''
+        if baud == eBaud_t.BAUD_9600:
+            return 9600
+        elif baud == eBaud_t.BAUD_19200:
+            return 19200
+        elif baud == eBaud_t.BAUD_38400:
+            return 38400
+        elif baud == eBaud_t.BAUD_57600:
+            return 57600
+        elif baud == eBaud_t.BAUD_115200:
+            return 115200
+        else:
+            return 0
+
+    def set_baud(self, baud):
+        '''!
+          @brief Set the module baud rate
+          @param baud: eBaud_t
+        '''
+        temp = [self.baud_match(baud)]
+        if temp == 0:
+            raise ValueError("Invalid baud rate")
+        buffer = [baud]
+        self.write_reg(REG_BAUD_L, buffer)
+        time.sleep(0.1)
+    
+    def get_baud(self):
+        '''!
+          @brief Get the current baud rate
+          @return baud [9600, 19200, 38400, 57600, 115200]
+        '''
+        data = self.read_reg(REG_BAUD_L, 1)
+        return self.baud_match(data[0])
+        
     def set_mode(self, mode):
         '''!
           @brief Set the module operation mode
@@ -184,7 +231,7 @@ class DFRobot_MHZ9041A_I2C(DFRobot_MHZ9041A):
             except:
                 self._error_handling()
             if self._connect > self.ERROR_COUNT:
-                raise ValueError("Please check the rtk_lora connection or Reconnection sensor!!!")
+                raise ValueError("Please check the SENSOR connection or Reconnection sensor!!!")
   
     def read_reg(self, reg, length):
         self._connect = 0
@@ -201,7 +248,7 @@ class DFRobot_MHZ9041A_I2C(DFRobot_MHZ9041A):
                 result = self._error_handling(length)
                 self._connect += 1
             if self._connect > self.ERROR_COUNT:
-                raise ValueError("Please check the rtk_lora connection or Reconnection sensor!!!")
+                raise ValueError("Please check the SENSOR connection or Reconnection sensor!!!")
         return result
 
 

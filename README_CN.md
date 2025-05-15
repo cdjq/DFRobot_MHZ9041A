@@ -118,6 +118,28 @@ bool setDeviceID(uint8_t id);
  * @return 模块地址
  */
 uint8_t getDeviceID(void);
+
+/**
+ * @fn setBaud
+ * @brief 设置模块波特率
+ * @param baud eModuleBaud_t
+ * @note
+ * | Support Baud | UNO/ESP8266 | Leonardo/Mega2560 | ESP32 |  M0 |
+ * | eBaud9600    |      √      |         √         |   √   |  √  |
+ * | eBaud19200   |      √      |         √         |   √   |  √  |
+ * | eBaud38400   |      √      |         √         |   √   |  √  |
+ * | eBaud57600   |      √      |         √         |   √   |  √  |
+ * | eBaud115200  |             |         √         |   √   |  √  |
+ */
+void setBaud(eModuleBaud_t baud);
+
+/**
+ * @fn getBaud
+ * @brief 获取模块波特率
+ * @return baud rate
+ * @note 9600, 19200, 38400, 57600, 115200
+ */
+uint32_t getBaud(void);
 ```
 
 ## 兼容性

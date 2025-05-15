@@ -45,120 +45,72 @@ python3 set_device_ID.py
 ## Methods
 
 ```python
-  def begin(self):
+  def set_baud(self, baud):
     '''!
-      @brief Init sensor 
-      @return True or False
-    '''
-    
-  def get_data_flush(self):
-    '''!
-      @brief get_data_flush 
-      @return True or False
-    '''
-    
-  def get_date(self):
-    '''!
-      @brief Get date information, year, month, day 
-      @return struct_utc_tim type, represents the returned year, month, day
-    '''
-    
-  def get_utc(self):
-    '''!
-      @brief Get time information, hour, minute second 
-      @return struct_utc_tim type, represents the returned hour, minute, second 
-    '''
-    
-  def get_lat(self):
-    '''!
-      @brief Get latitude 
-      @return struct_lat_lon type, represents the returned latitude 
+      @brief Set the module baud rate
+      @param baud: eBaud_t
     '''
 
-  def get_lon(self):
+  def get_baud(self):
     '''!
-      @brief Get longitude 
-      @return struct_lat_lon type, represents the returned longitude 
+      @brief Get the current baud rate
+      @return baud [9600, 19200, 38400, 57600, 115200]
     '''
-    
-  def get_num_sta_used(self):
+          
+  def set_mode(self, mode):
     '''!
-      @brief Get the number of the used satellite used
-      @return uint8_t type, represents the number of the used satellite
-    '''
-
-  def get_alt(self):
-    '''!
-      @brief Altitude information
-      @return double type, represents altitude 
-    '''
-    
-  def get_sep(self):
-    '''!
-      @brief At the height of geoid
-      @return Float data(unit: degree)
-    '''
-    
-  def get_hdop(self):
-    '''!
-      @brief Indicates the horizontal accuracy of positioning
-      @return hdop
+      @brief Set the module operation mode
+      @param mode Operation mode value to configure
     '''
 
-  def get_quality(self):
+  def get_source_data(self):
     '''!
-      @brief get message Quality 
-      @return message Quality
-    '''
-    
-  def get_site_id(self):
-    '''!
-      @brief get site id
-      @return site id  
-    '''
-  
-  def get_dif_time(self):
-    '''!
-      @brief The number of seconds in which a differential signal was last received
-      @return differential time
+      @brief Retrieve raw sensor data
+      @return Raw data as string. Returns "data error" if length exceeds 44 bytes
     '''
 
-  def get_module(self):
+  def get_active_data(self):
     '''!
-      @brief Get the Module run mode
-      @return mode
+      @brief Get real-time data in active state
+      @return Real-time data as string. Empty string if no data
     '''
-      
-  def set_module(self, mode):
-    '''!
-      @brief Set the Module
-      @param mode 4G or lora
-    '''
-      
-  def set_module_baud(self, baud):
-    '''!
-      @brief Set the Module Baud rate
-      @param baud rate
-    '''
-    
-  def get_moudle_baud(self):
-    '''!
-      @brief Get the Module baud
-      @return baud
-    '''
-    
-  def get_gnss_message(self, mode):
-    '''!
-      @brief Get different types of gps data
-      @param mode
-      @return char* 
-    '''
-    
 
-  def get_all_gnss(self):
+  def get_ch4_concentration(self):
     '''!
-      @brief Get all GNSS data
-      @return gnss all data
+      @brief Measure methane (CH4) concentration
+      @return Concentration value in %VOL. Returns 0.0 if read fails
+      @note Includes calibration: raw_value = (raw_value + 5) // 10 * 10
+    '''
+
+  def get_temperature(self):
+    '''!
+      @brief Read sensor temperature
+      @return Temperature value in ℃. Returns 0.0 if read fails
+    '''
+
+  def get_error_code(self):
+    '''!
+      @brief Retrieve device error status
+      @return Error code (enum type). Returns normal status if no data
+    '''
+
+  def reset(self):
+    '''!
+      @brief Perform device soft reset
+    '''
+
+  def set_device_id(self, dev_id):
+    '''!
+      @brief Configure I2C device address
+      @param dev_id Target address (0x03~0x7F)
+      @return True on success
+      @throws ValueError If address is out of valid range
+    '''
+
+  def get_device_id(self):
+    '''!
+      @brief Read current I2C device address
+      @return Device address. Returns 0 if read fails
     '''
 ```
 
@@ -182,7 +134,7 @@ python3 set_device_ID.py
 
 ## History
 
-- 2025/08/14 - Version 1.0.0 released.
+- 2025/04/23 - Version 1.0.0 released.
 
 ## Credits
 

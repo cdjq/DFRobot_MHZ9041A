@@ -4,12 +4,12 @@
  * @copyright	Copyright (c) 2025 DFRobot Co.Ltd (http://www.dfrobot.com)
  * @license The MIT License (MIT)
  * @author [ZhixinLiu](zhixin.liu@dfrobot.com)
- * @version V1.0
- * @date 202-03-07
+ * @version V1.0.0
+ * @date 2025-04-23
  * @url https://github.com/DFRobot/DFRobot_MHZ9041A
  */
-#ifndef __DFRobot_GNSS_H__
-#define __DFRobot_GNSS_H__
+#ifndef __DFROBOT__MHZ9041A__
+#define __DFROBOT__MHZ9041A__
 
 #include <Arduino.h>
 #include <Wire.h>
@@ -20,6 +20,17 @@
 #include "HardwareSerial.h"
 #endif
 
+/**
+ * @enum eModuleBaud_t
+ * @brief sensor work baud rate
+ */
+typedef enum  {
+  eBaud9600 = 2,
+  eBaud19200 = 4,
+  eBaud38400 = 5,
+  eBaud57600 = 7,
+  eBaud115200 = 8,
+}eModuleBaud_t;
 
 /**
  * @enum eFaultCode_t
@@ -49,6 +60,7 @@ typedef enum {
 #define TIME_OUT 200
 #define REG_VID_H 0X02
 #define REG_DEVICE_L 0X05
+#define REG_BAUD_L 0X07
 #define REG_VESION_H 0X0A
 #define REG_LEL_H 0x0C
 #define REG_TEMP_H 0x0E
@@ -63,6 +75,28 @@ class DFRobot_MHZ9041A{
 public:
 DFRobot_MHZ9041A();
 ~DFRobot_MHZ9041A();
+
+/**
+ * @fn setBaud
+ * @brief Set the Baud object
+ * @param baud eModuleBaud_t
+ * @note
+ * | Support Baud | UNO/ESP8266 | Leonardo/Mega2560 | ESP32 |  M0 |
+ * | eBaud9600    |      √      |         √         |   √   |  √  |
+ * | eBaud19200   |      √      |         √         |   √   |  √  |
+ * | eBaud38400   |      √      |         √         |   √   |  √  |
+ * | eBaud57600   |      √      |         √         |   √   |  √  |
+ * | eBaud115200  |             |         √         |   √   |  √  |
+ */
+void setBaud(eModuleBaud_t baud);
+
+/**
+ * @fn getBaud
+ * @brief Get the Baud object
+ * @return baud rate
+ * @note 9600, 19200, 38400, 57600, 115200
+ */
+uint32_t getBaud(void);
 
 /**
  * @fn setMode
@@ -131,11 +165,12 @@ uint8_t getDeviceID(void);
 
 protected:
   uint16_t crc16(uint8_t *data, uint16_t length);
+  uint32_t baudMatch(eModuleBaud_t baud);
 private:
   uint8_t  __addr;
   virtual void writeReg(uint8_t reg, uint8_t *data, uint8_t len) = 0;
   virtual int16_t readReg(uint8_t reg, uint8_t *data, uint8_t len) = 0;
-  virtual int16_t readData(uint8_t *data);
+  virtual int16_t readData(uint8_t *data) = 0;
   
 };
 
@@ -146,9 +181,7 @@ public:
 protected:
   virtual void writeReg(uint8_t reg, uint8_t *data, uint8_t len);
   virtual int16_t readReg(uint8_t reg, uint8_t *data, uint8_t len);
-  int16_t readData(uint8_t* data) override {
-    return -1;  // 占位用
-  }
+  int16_t readData(uint8_t* data);
 private:
   TwoWire *__pWire;
   uint8_t __I2C_addr;

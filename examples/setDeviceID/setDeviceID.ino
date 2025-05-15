@@ -26,7 +26,7 @@
 /* Baud rate cannot be changed */
   #if defined(ARDUINO_AVR_UNO) || defined(ESP8266)
     SoftwareSerial mySerial(4, 5);
-    DFRobot_MHZ9041A_UART ch4(&mySerial, 115200);
+    DFRobot_MHZ9041A_UART ch4(&mySerial, 57600);
   #elif defined(ESP32)
     DFRobot_MHZ9041A_UART ch4(&Serial1, 115200 ,/*rx*/D2 ,/*tx*/D3);
   #else
@@ -37,12 +37,13 @@
   void setup()
   {
     Serial.begin(115200);
+    while(!Serial);
     while(!ch4.begin()){
       Serial.println("NO Deivces !");
       delay(1000);
     } Serial.println("Device connected !");
     ch4.setMode(ePassivityMode);               // set Passivity mode
-    bool result = ch4.setDeviceID(0x05);
+    bool result = ch4.setDeviceID(0x34);
     if(result){
       Serial.println("Set device ID success!");
     }else{
